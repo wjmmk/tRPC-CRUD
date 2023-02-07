@@ -4,6 +4,7 @@ import { httpBatchLink } from '@trpc/client';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import NotesList from './components/NotesList';
+import NoteForm from './components/NotesForm';
 
 export default function App () {
 
@@ -26,6 +27,7 @@ export default function App () {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
+        <NoteForm />
         <NotesList />
       </QueryClientProvider>
     </trpc.Provider>
