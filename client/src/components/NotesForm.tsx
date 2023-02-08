@@ -1,5 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 
+import { trpc } from "../utils/trpc";
+
 const NoteForm = () => {
 
     const [note, setNote] = useState({
@@ -7,9 +9,15 @@ const NoteForm = () => {
         description: ''
     })
 
+    const addNote = trpc.note.create.useMutation()
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(note)
+        addNote.mutate(note, {
+            onSuccess: () => {
+                console.log('Note Added Successfully')
+            }
+        })
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
