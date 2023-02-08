@@ -1,4 +1,8 @@
 import app from './app';
+import { dbConnect } from './config/mongo'
+
+dbConnect()
+
 app.listen(3000)
 
 
