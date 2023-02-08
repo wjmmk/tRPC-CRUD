@@ -17,9 +17,39 @@ const createNotes = publicProcedure
         })
         const savedNote = await newNote.save()
         return savedNote;
+})
+
+const deleteNote = publicProcedure
+    .input(z.string())
+    .mutation( async ( { input }) => {
+       try {
+            const noteFound = await Note.findByIdAndDelete(input)
+            if(!noteFound) throw new Error('Note not Found')
+            return true;
+       } catch (error) {
+            console.log(error)
+            return false;
+       }
+})
+
+const updateNote = publicProcedure
+    .input(z.string())
+    .mutation( async ( { input }) => {
+        try {
+            const noteToUpdate = await Note.findById(input)
+            if(!noteToUpdate) throw new Error('Note Not Found')
+            noteToUpdate.done = !noteToUpdate.done
+            await noteToUpdate.save()
+            return true;            
+        } catch (error) {
+            console.log(error)
+            return false;
+        }
     })
 
 export const notesRouter = router({
     get: getNotes,
-    create: createNotes
+    create: createNotes,
+    delete: deleteNote,
+    update: updateNote
 })
